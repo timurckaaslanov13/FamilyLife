@@ -1,0 +1,106 @@
+{% load static %}
+{% load main_site_tags %}
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link type="text/css" href="{% static 'main_site/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link type="text/css" href="{% static 'main_site/css/style.css' %}" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static 'main_site/img/favicon.png' %}" type="image/x-icon">
+</head>
+
+<body>
+
+    <div class="text-center">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Загруу..</span>
+        </div>
+    </div>
+    
+    <div class="page">
+        <header class="container-fluid py-3 container-fluid d-flex justify-content-center">
+                    <div class="btn-group drop">
+                        <button type="button" class="dropdownMenuButton btn btn-secondary dropdown-toggle btn-caretless" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{% static 'main_site/img/categ.png' %}" alt="Категории">
+                        </button>
+                        {% get_category as categories %}
+                        <ul class="dropdown-menu">
+                            {% for category in categories %}
+                                <li><a class="dropdown-item" href="{{ category.get_absolute_url }}">{{ category.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                        <button type="button" class="dropdownMenuButton btn btn-secondary dropdown-toggle btn-caretless" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{% static 'main_site/img/menu.png' %}" alt="Меню">
+                        </button>
+
+                        <ul class="dropdown-menu">
+                            {% if perms.main_site.add_post %}
+                                <li><a href="{% url 'add_page' %}" class="dropdown-item">Добавить статью</a></li>
+                            {% endif %}
+                            {% for m in mainmenu %}
+                            <lo><a href="{% url  m.url_name  %}" class="dropdown-item">{{ m.title }}</a></lo>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    
+                    <div class="container text-center">
+                        <div class="row">
+                                <h1 class="text-white">FamilyLife</h1>
+                        </div>  
+                    </div>
+                    
+                    <div class="container container-fluid" style="position: absolute; text-align: right;">
+                        {% if user.is_authenticated %}
+                        <lo class="text-light">
+                            <div class="container ">
+                                {{user.username}} 
+                                <a class="btn text-light" href="{% url 'users:logout' %}">Выйти</a>
+                            </div> 
+                        </lo>
+                        {% else %}
+                            <lo>
+                                <div class="container">
+                                    <a class="btn text-light" href="{% url 'users:login' %}">Войти</a>
+                                    <a class="btn text-light" href="{% url 'users:register' %}">Регистрация</a>
+                                </div>
+                                
+                            </lo>
+                        {% endif %}  
+                    </div>
+            {% block header %}
+            {% endblock %}
+        </header>
+        <main class="py-5 flex-grow-1">
+            {% block content %}
+            {% endblock %}
+        </main>
+
+        <footer class="bg-dark text-light py-3 mt-auto">
+            <div class="container">
+                <div class="row">
+                <div class="col-md-4">
+                    <a href="{% url 'about' %}" class="btn text-light">О компании</a></li>
+                </div>
+                <div class="col-md-4">
+                    <p class="text-center">Подпишитесь на новости</p>
+                    <form action="#">
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Ваш email">
+                        <button class="btn btn-primary" type="submit">Подписаться</button>
+                    </div>
+                    </form>
+                </div>
+                </div>
+                <div class="text-center">
+                &copy; 2024 Все права защищены
+                </div>
+            </div>
+            </footer>
+            
+    </div>
+    <script src="{% static 'main_site/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'main_site/js/spinner.js' %}"></script>
+</body>
+</html>

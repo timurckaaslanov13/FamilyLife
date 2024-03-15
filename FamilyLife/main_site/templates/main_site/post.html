@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+{% if post.photo %}
+<p><img src="{{post.photo.url}}" alt=""></p>
+{% endif %}
+
+<div class="container text-left">
+    <h2>{{title}}</h2>
+</div>
+<div class="container">
+    <p>{{post.content}}</p>
+</div>
+
+<!-- <a class="btn" href="{{ post.get_absolute_url }}">
+    {% if user.is_authenticated %}
+        {% if like %}
+            Unlike
+        {% else %}
+            Like
+        {% endif %}
+    {% else %}
+        Login to like
+    {% endif %}
+</a> -->
+
+<div class="container py-3 mt-auto">
+    <div class="row col-md-6">
+        <div class="comments text-start">
+            <h3 class="border-bottom">Комментарии</h3>
+            {% for feed in feedback %}
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h4 class="card-title">{{ feed.user }}</h4>
+                        <!-- <p class="card-text text-muted">{{ comment.created_at }}</p> -->
+                    </div>
+                    <div class="card-body">
+                        <p>{{ feed.text_feed }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<form action="" method="post">
+    {% csrf_token %}
+    <div class="container">
+        <div class="form-error">{{form.non_field_errors}}</div>
+        {% for f in form %}
+        <div class="row mb-3">
+            <p><label class="col-sm-2 col-form-label" for="{{ f.id_for_label }}">{{f.label}}</label>
+                <div class="col-sm-10">
+                    {{f}}
+                </div>
+            </p>
+            <div class="form-error">{{f.errors}}</div>
+        </div>  
+        {% endfor %}
+        <button type="submit">Отправить отзыв</button>
+    </div>
+    
+</form>
+{% endblock %}
+

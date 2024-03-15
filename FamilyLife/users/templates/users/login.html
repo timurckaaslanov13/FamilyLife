@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container text-center">
+    <h2 class="h3 mb-3 fw-normal">Авторизация</h2>
+    <div class="col-md-12">
+        <form class="form-signin" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
+            
+            {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id }}">{{ field.label }}</label>
+                {% if field.name == 'username' %}
+                    <p>{{field}}</p>
+                {% elif field.name == 'password' %}
+                    <p>{{field}}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <button class="btn" type="button" id="show-password-button">
+                <img src="../../static/main_site/img/hide.png" alt="Показать пароль">
+            </button>
+            <button class="btn btn-lg btn-primary" type="submit">Войти</button>
+        </form>
+    </div>
+    
+    <script src="{% static 'users/js/script.js' %}"></script>
+</div>
+
+
+
+
+
+{% endblock %}
